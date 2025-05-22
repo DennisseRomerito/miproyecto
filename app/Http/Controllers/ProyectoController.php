@@ -49,8 +49,6 @@ class ProyectoController extends Controller
      */
     public function edit($id)
     {
-        
-        
         $proyecto=Proyecto::find($id);
         return view("projects/update", compact('proyecto'));
     }
