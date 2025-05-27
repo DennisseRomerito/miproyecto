@@ -14,7 +14,7 @@ class ProyectoController extends Controller
      */
     public function index()
     {   
-        $proyectos=DB::table('proyectos')->get();
+        $proyectos = DB::table('proyectos')->get();
         return view("projects/index",['proyectos'=>$proyectos]);
     }
 
@@ -56,16 +56,27 @@ class ProyectoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Proyecto $proyecto)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'titulo'=>'required|max:255',
+            'descripcion'=>'required'
+        ]);
+        $proyecto=Proyecto::find($id);
+        $proyecto->update($request->all());
+        return redirect('project/')
+        ->with('success','Proyecto actualizado satisfactoriamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Proyecto $proyecto)
+    public function destroy($id)
     {
-        //
+        $proyecto = Proyecto::findOrFail($id);
+        $proyecto->delete();
+
+        return redirect()->route('project.index')->with('success','Proyecto eliminado correctamente.');
     }
+
 }
